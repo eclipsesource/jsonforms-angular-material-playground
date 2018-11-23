@@ -7,8 +7,9 @@ export default {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            name: { type: 'string' },
-            department: { type: 'string' }
+            name: { type: 'string'},
+            department: { type: 'string' },
+            emailAddress: { type: 'string', format: 'email' }
           }
         },
         title: {
@@ -32,6 +33,13 @@ export default {
         status: {
           type: 'string',
           enum: ['unordered', 'planned', 'ordered']
+        },
+        amount: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 100,
+          default: 10,
+          multipleOf: 1
         }
       }
     }
@@ -41,7 +49,7 @@ export default {
     orders: {
       type: 'array',
       items: {
-        $ref: "#/definitions/order"
+        $ref: '#/definitions/order'
       }
     }
   },
