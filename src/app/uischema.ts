@@ -97,6 +97,10 @@ export default {
                   {
                     'type': 'Control',
                     'scope': '#/properties/customer/properties/emailAddress'
+                  },
+                  {
+                    'type': 'Control',
+                    'scope': '#/properties/customer/properties/phone'
                   }
                 ]
               }

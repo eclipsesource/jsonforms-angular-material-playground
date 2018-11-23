@@ -5,6 +5,8 @@ import {isDevMode, NgModule} from '@angular/core';
 import {DevToolsExtension, NgRedux} from '@angular-redux/store';
 import {Actions, JsonFormsState, UISchemaElement} from '@jsonforms/core';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
+import * as AJV from 'ajv';
+import { parsePhoneNumber } from 'libphonenumber-js'
 import logger from 'redux-logger';
 
 import { initialState, rootReducer } from './store';
@@ -46,6 +48,24 @@ export class AppModule {
       enhancers
     );
 
+
+    // resembles createAjv, which is currently not exported
+    const ajv = new AJV({
+      schemaId: 'auto',
+      allErrors: true,
+      jsonPointers: true,
+      errorDataPath: 'property'
+    });
+    ajv.addFormat('time', '^([0-1][0-9]|2[0-3]):[0-5][0-9]$');
+    ajv.addFormat('tel', maybePhoneNumber => {
+      try {
+        parsePhoneNumber(maybePhoneNumber, 'DE');
+        return true;
+      } catch (_) {
+        return false;
+      }
+    });
+
     JsonRefs.resolveRefs(schema)
       .then(
         res =>
@@ -53,8 +73,10 @@ export class AppModule {
             data,
             res.resolved,
             // TODO: cast shouldn't be necessary
-            uischema as UISchemaElement
+            uischema as UISchemaElement,
+            ajv
           ))
       );
+
   }
 }

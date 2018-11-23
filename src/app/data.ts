@@ -4,7 +4,8 @@ export default {
       customer: {
         id: '471201',
         name: 'Sirius Cybernetics Corporation',
-        department: 'Complaints Division'
+        department: 'Complaints Division',
+        phone: '(12) 34 56 78 90'
       },
       title: '42 killer robots',
       ordered: true,
@@ -17,7 +18,8 @@ export default {
     {
       customer: {
         id: '471202',
-        name: 'Very Big Corporation of America'
+        name: 'Very Big Corporation of America',
+        phone: '+49 123 456 789'
       },
       title: '1000 gallons of MomCorp Oil',
       processId: '1890004499',
