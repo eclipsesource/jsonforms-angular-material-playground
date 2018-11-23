@@ -9,7 +9,11 @@ export default {
             id: { type: 'string' },
             name: { type: 'string'},
             department: { type: 'string' },
-            emailAddress: { type: 'string', format: 'email' }
+            emailAddress: { type: 'string', format: 'email' },
+            phone: {
+              type: 'string',
+              format: 'tel'
+            },
           }
         },
         title: {
