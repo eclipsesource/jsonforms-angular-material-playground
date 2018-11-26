@@ -6,7 +6,7 @@ import {DevToolsExtension, NgRedux} from '@angular-redux/store';
 import {Actions, JsonFormsState, UISchemaElement} from '@jsonforms/core';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
 import * as AJV from 'ajv';
-import { parsePhoneNumber } from 'libphonenumber-js'
+import { parsePhoneNumber } from 'libphonenumber-js';
 import logger from 'redux-logger';
 
 import { initialState, rootReducer } from './store';
@@ -15,17 +15,23 @@ import schema from './schema';
 import uischema from './uischema';
 
 import { AppComponent } from './app.component';
+import {CustomAutocompleteControlRenderer} from './custom.autocomplete';
+import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CustomAutocompleteControlRenderer
   ],
   imports: [
     BrowserModule,
     JsonFormsAngularMaterialModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule
   ],
   schemas: [],
   providers: [],
+  entryComponents: [CustomAutocompleteControlRenderer],
   bootstrap: [AppComponent]
 })
 export class AppModule {
