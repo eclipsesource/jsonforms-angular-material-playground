@@ -21,7 +21,7 @@ export default {
         name: 'Very Big Corporation of America',
         phone: '+49 123 456 789'
       },
-      title: '1000 gallons of oil',
+      title: '1000 gallons of MomCorp Oil',
       processId: 1890004499,
       assignee: 'Jen Barber',
       startDate: '2018-07-01',
