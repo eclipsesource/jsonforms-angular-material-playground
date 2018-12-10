@@ -1,9 +1,10 @@
 import * as JsonRefs from 'json-refs';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import {isDevMode, NgModule} from '@angular/core';
 import {DevToolsExtension, NgRedux} from '@angular-redux/store';
-import {Actions, JsonFormsState, UISchemaElement} from '@jsonforms/core';
+import {Actions, JsonFormsState, setLocale, UISchemaElement} from '@jsonforms/core';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
 import * as AJV from 'ajv';
 import { parsePhoneNumber } from 'libphonenumber-js';
@@ -11,8 +12,6 @@ import logger from 'redux-logger';
 
 import { initialState, rootReducer } from './store';
 import data from './data';
-import schema from './schema';
-import uischema from './uischema';
 
 import { AppComponent } from './app.component';
 import {CustomAutocompleteControlRenderer} from './custom.autocomplete';
@@ -27,7 +26,8 @@ import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material
     BrowserModule,
     JsonFormsAngularMaterialModule,
     MatAutocompleteModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    HttpClientModule
   ],
   schemas: [],
   providers: [],
@@ -37,7 +37,8 @@ import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material
 export class AppModule {
   constructor(
     ngRedux: NgRedux<JsonFormsState>,
-    devTools: DevToolsExtension
+    devTools: DevToolsExtension,
+    http: HttpClient
   ) {
     let enhancers = [];
     // ... add whatever other enhancers you want.
@@ -72,17 +73,25 @@ export class AppModule {
       }
     });
 
-    JsonRefs.resolveRefs(schema)
-      .then(
-        res =>
-          ngRedux.dispatch(Actions.init(
-            data,
-            res.resolved,
-            // TODO: cast shouldn't be necessary
-            uischema as UISchemaElement,
-            ajv
-          ))
-      );
+    ngRedux.dispatch(setLocale('de-DE'));
 
+    http.get('./assets/uischema.json')
+      .forEach((uischema) => {
+        http.get('./assets/schema.json')
+          .forEach((schema) =>
+            JsonRefs.resolveRefs(schema)
+              .then(
+                (res: any) =>
+                  ngRedux.dispatch(
+                    Actions.init(
+                      data,
+                      res.resolved,
+                      uischema as UISchemaElement,
+                      ajv
+                    )
+                  )
+              )
+          );
+      });
   }
 }
