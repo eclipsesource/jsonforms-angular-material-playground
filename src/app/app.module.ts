@@ -16,11 +16,15 @@ import data from './data';
 import { AppComponent } from './app.component';
 import {CustomAutocompleteControlRenderer} from './custom.autocomplete';
 import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material';
+import { LangComponent } from './lang.control';
+import { DataDisplayComponent } from './data.control';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CustomAutocompleteControlRenderer
+    CustomAutocompleteControlRenderer,
+    LangComponent,
+    DataDisplayComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,7 @@ import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material
   ],
   schemas: [],
   providers: [],
-  entryComponents: [CustomAutocompleteControlRenderer],
+  entryComponents: [CustomAutocompleteControlRenderer, LangComponent, DataDisplayComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
