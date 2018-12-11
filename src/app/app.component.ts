@@ -8,5 +8,4 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @select(['jsonforms', 'core', 'data']) readonly data$: Observable<any>;
 }
