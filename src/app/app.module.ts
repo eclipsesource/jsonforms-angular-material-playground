@@ -1,4 +1,4 @@
-import * as JsonRefs from 'json-refs';
+import JsonRefs from 'json-refs';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -6,7 +6,7 @@ import {isDevMode, NgModule} from '@angular/core';
 import {DevToolsExtension, NgRedux} from '@angular-redux/store';
 import {Actions, JsonFormsState, setLocale, UISchemaElement} from '@jsonforms/core';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
-import * as AJV from 'ajv';
+import AJV from 'ajv';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import logger from 'redux-logger';
 
