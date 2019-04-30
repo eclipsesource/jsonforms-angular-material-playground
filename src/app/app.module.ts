@@ -18,6 +18,8 @@ import {CustomAutocompleteControlRenderer} from './custom.autocomplete';
 import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material';
 import { LangComponent } from './lang.control';
 import { DataDisplayComponent } from './data.control';
+import { JsonFormsModule } from '@jsonforms/angular';
+import { LocaleValidationModule, TranslationModule } from 'angular-l10n';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,9 @@ import { DataDisplayComponent } from './data.control';
   ],
   imports: [
     BrowserModule,
+    LocaleValidationModule.forRoot(),
+    TranslationModule.forRoot({}),
+    JsonFormsModule,
     JsonFormsAngularMaterialModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
