@@ -39,6 +39,6 @@ export const initialState: any = {
         )
       },
     ],
-    fields: [],
+    cells: [],
   }
 };
