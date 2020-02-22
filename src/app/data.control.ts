@@ -1,18 +1,18 @@
-import {NgRedux} from '@angular-redux/store';
-import {Component} from '@angular/core';
-import {JsonFormsControl} from '@jsonforms/angular';
-import {ControlProps, JsonFormsState} from '@jsonforms/core';
+import { Component } from '@angular/core';
+import { JsonFormsControl } from '@jsonforms/angular';
+import { ControlProps } from '@jsonforms/core';
+import { JSONFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
 
 @Component({
   selector: 'app-data-component',
-  template:  '<pre>{{dataAsString}}</pre>'
+  template: '<pre>{{dataAsString}}</pre>'
 })
 export class DataDisplayComponent extends JsonFormsControl {
 
   dataAsString: string;
 
-  constructor(protected ngRedux: NgRedux<JsonFormsState>) {
-    super(ngRedux);
+  constructor(service: JSONFormsAngularService) {
+    super(service);
   }
 
   public mapAdditionalProps(props: ControlProps) {

@@ -1,71 +1,25 @@
-import JsonRefs from 'json-refs';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
-import {isDevMode, NgModule} from '@angular/core';
-import {DevToolsExtension, NgRedux} from '@angular-redux/store';
-import {Actions, JsonFormsState, setLocale, UISchemaElement} from '@jsonforms/core';
-import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
-import AJV from 'ajv';
-import { parsePhoneNumber } from 'libphonenumber-js';
-import logger from 'redux-logger';
-
-import { initialState, rootReducer } from './store';
-import data from './data';
-
-import { AppComponent } from './app.component';
-import {CustomAutocompleteControlRenderer} from './custom.autocomplete';
-import {MatAutocompleteModule, MatProgressSpinnerModule} from '@angular/material';
-import { LangComponent } from './lang.control';
-import { DataDisplayComponent } from './data.control';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserModule } from '@angular/platform-browser';
 import { JsonFormsModule } from '@jsonforms/angular';
-import { LocaleValidationModule, TranslationModule } from 'angular-l10n';
+import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
+import { JSONFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
+import { Actions, setLocale, UISchemaElement } from '@jsonforms/core';
+import AJV from 'ajv';
+import JsonRefs from 'json-refs';
+import { parsePhoneNumber } from 'libphonenumber-js';
+import { forkJoin } from 'rxjs';
+import { AppComponent } from './app.component';
+import { CustomAutocompleteControlRenderer } from './custom.autocomplete';
+import data from './data';
+import { DataDisplayComponent } from './data.control';
+import { LangComponent } from './lang.control';
+import { initialState } from './store';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    CustomAutocompleteControlRenderer,
-    LangComponent,
-    DataDisplayComponent
-  ],
-  imports: [
-    BrowserModule,
-    LocaleValidationModule.forRoot(),
-    TranslationModule.forRoot({}),
-    JsonFormsModule,
-    JsonFormsAngularMaterialModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    HttpClientModule
-  ],
-  schemas: [],
-  providers: [],
-  entryComponents: [CustomAutocompleteControlRenderer, LangComponent, DataDisplayComponent],
-  bootstrap: [AppComponent]
-})
-export class AppModule {
-  constructor(
-    ngRedux: NgRedux<JsonFormsState>,
-    devTools: DevToolsExtension,
-    http: HttpClient
-  ) {
-    let enhancers = [];
-    // ... add whatever other enhancers you want.
-
-    // You probably only want to expose this tool in devMode.
-    if (isDevMode() && devTools.isEnabled()) {
-      enhancers = [ ...enhancers, devTools.enhancer() ];
-    }
-
-    ngRedux.configureStore(
-      rootReducer,
-      initialState,
-      [logger],
-      enhancers
-    );
-
-
-    // resembles createAjv, which is currently not exported
+export const loadCore = (jsonformsService: JSONFormsAngularService, http: HttpClient): () => Promise<void> => {
+  return () => {
     const ajv = new AJV({
       schemaId: 'auto',
       allErrors: true,
@@ -82,25 +36,61 @@ export class AppModule {
       }
     });
 
-    ngRedux.dispatch(setLocale('de-DE'));
-
-    http.get('./assets/uischema.json')
-      .forEach((uischema) => {
-        http.get('./assets/schema.json')
-          .forEach((schema) =>
-            JsonRefs.resolveRefs(schema)
-              .then(
-                (res: any) =>
-                  ngRedux.dispatch(
-                    Actions.init(
-                      data,
-                      res.resolved,
-                      uischema as UISchemaElement,
-                      ajv
-                    )
-                  )
+    return forkJoin({
+      uischema: http.get('./assets/uischema.json'),
+      schema: http.get('./assets/schema.json')
+    }).toPromise().then(result => {
+      const { schema, uischema } = result;
+      return JsonRefs.resolveRefs(schema)
+        .then(
+          (res: any) => {
+            jsonformsService.updateCore(
+              Actions.init(
+                data,
+                res.resolved,
+                uischema as UISchemaElement,
+                ajv
               )
-          );
-      });
+            );
+          }
+
+        );
+    });
+  };
+};
+@NgModule({
+  declarations: [
+    AppComponent,
+    CustomAutocompleteControlRenderer,
+    LangComponent,
+    DataDisplayComponent
+  ],
+  imports: [
+    BrowserModule,
+    JsonFormsModule,
+    JsonFormsAngularMaterialModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    HttpClientModule
+  ],
+  schemas: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: loadCore,
+      deps: [JSONFormsAngularService, HttpClient],
+      multi: true
+    }
+  ],
+  entryComponents: [CustomAutocompleteControlRenderer, LangComponent, DataDisplayComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+  constructor(jsonformsService: JSONFormsAngularService) {
+    jsonformsService.init(initialState.jsonforms);
+
+    jsonformsService.updateLocale(setLocale('de-DE'));
+
+
   }
 }

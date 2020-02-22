@@ -1,23 +1,31 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
-    "module": "es2015",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "json-schema-ref-parser": ["node_modules/json-schema-ref-parser/dist/ref-parser.js"]
-    }
+    "allowSyntheticDefaultImports": true
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableIvy":false
+  },
+  "paths": {
+    "json-schema-ref-parser": ["node_modules/json-schema-ref-parser/dist/ref-parser.js"]
   }
 }
