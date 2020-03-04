@@ -5,7 +5,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
 import { JsonFormsModule } from '@jsonforms/angular';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
-import { JSONFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
+import { JsonFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
 import { Actions, setLocale, UISchemaElement } from '@jsonforms/core';
 import AJV from 'ajv';
 import JsonRefs from 'json-refs';
@@ -18,7 +18,7 @@ import { DataDisplayComponent } from './data.control';
 import { LangComponent } from './lang.control';
 import { initialState } from './store';
 
-export const loadCore = (jsonformsService: JSONFormsAngularService, http: HttpClient): () => Promise<void> => {
+export const loadCore = (jsonformsService: JsonFormsAngularService, http: HttpClient): () => Promise<void> => {
   return () => {
     const ajv = new AJV({
       schemaId: 'auto',
@@ -78,7 +78,7 @@ export const loadCore = (jsonformsService: JSONFormsAngularService, http: HttpCl
     {
       provide: APP_INITIALIZER,
       useFactory: loadCore,
-      deps: [JSONFormsAngularService, HttpClient],
+      deps: [JsonFormsAngularService, HttpClient],
       multi: true
     }
   ],
@@ -86,7 +86,7 @@ export const loadCore = (jsonformsService: JSONFormsAngularService, http: HttpCl
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(jsonformsService: JSONFormsAngularService) {
+  constructor(jsonformsService: JsonFormsAngularService) {
     jsonformsService.init(initialState.jsonforms);
 
     jsonformsService.updateLocale(setLocale('de-DE'));

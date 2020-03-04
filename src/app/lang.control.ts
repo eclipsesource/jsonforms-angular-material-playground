@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { JsonFormsControl } from '@jsonforms/angular';
 import { getLocale, setLocale } from '@jsonforms/core';
-import { JSONFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
+import { JsonFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
 
 @Component({
   selector: 'app-lang-component',
@@ -16,7 +16,7 @@ export class LangComponent extends JsonFormsControl {
 
   currentLocale: string;
 
-  constructor(service: JSONFormsAngularService) {
+  constructor(service: JsonFormsAngularService) {
     super(service);
   }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { JsonFormsControl } from '@jsonforms/angular';
 import { ControlProps } from '@jsonforms/core';
-import { JSONFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
+import { JsonFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
 
 @Component({
   selector: 'app-data-component',
@@ -11,7 +11,7 @@ export class DataDisplayComponent extends JsonFormsControl {
 
   dataAsString: string;
 
-  constructor(service: JSONFormsAngularService) {
+  constructor(service: JsonFormsAngularService) {
     super(service);
   }
 
