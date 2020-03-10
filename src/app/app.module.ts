@@ -3,9 +3,9 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
-import { JsonFormsModule } from '@jsonforms/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JsonFormsAngularService, JsonFormsModule } from '@jsonforms/angular';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
-import { JsonFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
 import { Actions, setLocale, UISchemaElement } from '@jsonforms/core';
 import AJV from 'ajv';
 import JsonRefs from 'json-refs';
@@ -49,7 +49,7 @@ export const loadCore = (jsonformsService: JsonFormsAngularService, http: HttpCl
                 data,
                 res.resolved,
                 uischema as UISchemaElement,
-                ajv
+                ajv as any
               )
             );
           }
@@ -67,6 +67,7 @@ export const loadCore = (jsonformsService: JsonFormsAngularService, http: HttpCl
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     JsonFormsModule,
     JsonFormsAngularMaterialModule,
     MatAutocompleteModule,

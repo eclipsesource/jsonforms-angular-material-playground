@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { JsonFormsControl } from '@jsonforms/angular';
+import { JsonFormsAngularService, JsonFormsControl } from '@jsonforms/angular';
 import { getLocale, setLocale } from '@jsonforms/core';
-import { JsonFormsAngularService } from '@jsonforms/angular/lib/jsonforms.service';
 
 @Component({
   selector: 'app-lang-component',
