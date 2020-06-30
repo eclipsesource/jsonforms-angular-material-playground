@@ -1,3 +1,4 @@
+This REPO is deprecated. Please use https://github.com/eclipsesource/jsonforms-angular-seed instead!
 # JsonformsAngularMaterialPlayground
 
 JSONForm Angular playground.
